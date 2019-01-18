@@ -19,12 +19,12 @@ mongoose.connect('mongodb://admin:myfirstdbadmin1@ds137530.mlab.com:37530/myfirs
 app.use(cors());
 app.options('*', cors());
 
-app.get('/', (req, res) => {
-    Message.find({}, (err,users) => {
-        if (err) throw err;
-        res.json(users)
-    })
-})
+// app.get('/', (req, res) => {
+//     Message.find({}, (err,users) => {
+//         if (err) throw err;
+//         res.json(users)
+//     })
+// })
 
 let online = 0;
 io.on('connection', (client) => {
@@ -53,5 +53,5 @@ io.on('connection', (client) => {
     })
 });
 
-app.use(express.static('../build'));
+app.use(express.static('../frontend/build'));
 server.listen(PORT, () => (console.log(`server is running on ${PORT}`)));
