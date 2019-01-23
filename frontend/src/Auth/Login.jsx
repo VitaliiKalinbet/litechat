@@ -79,10 +79,10 @@ class Login extends Component {
                         <Icon name='user circle' color='green'/>
                         Login to Chat
                     </Header>
-                    <Form size='large' onSubmit={this.handleSubmit}>
+                    <Form size='large' onSubmit={this.props.funcLogin}>
                         <Segment stacked>
                             
-                            <Form.Input 
+                            {/* <Form.Input 
                             fluid
                             name='user'
                             icon='user'
@@ -92,7 +92,20 @@ class Login extends Component {
                             onChange={this.props.handlerChange}
                             value={this.props.user}
                             required
-                            autofocus
+                            autoFocus
+                            /> */}
+
+                            <Form.Input 
+                            fluid
+                            name='email'
+                            icon='mail'
+                            iconPosition='left'
+                            placeholder="Enter email"
+                            type='email'
+                            onChange={this.props.handlerChange}
+                            value={this.props.email}
+                            required
+                            autoFocus
                             />
 
                             <Form.Input
@@ -107,7 +120,7 @@ class Login extends Component {
                             required
                             />
 
-                            <Button onClick={this.props.funcLogin} color='green' fluid size='large'>
+                            <Button type='submit' color='green' fluid size='large'>
                                 Login
                             </Button>
 
@@ -116,8 +129,7 @@ class Login extends Component {
 
                     {this.props.error &&
                         <Message>
-                        Enter another user name or coorect password, please!
-                        {/* <NavLink to='/registration'>&nbsp;Registration</NavLink>  */}
+                        {this.props.error}
                         </Message> }
 
                     
@@ -128,14 +140,14 @@ class Login extends Component {
                         </Message>
                     )} */}
 
-                        {/* <Message>
+                        <Message>
                             Don't have an account?
-                            <NavLink to='/registration'> Registration</NavLink>
-                        </Message>       */}
+                            <Button color='green' fluid onClick={this.props.anotherModal}> Registration</Button>
+                        </Message>      
 
-                            <Button onClick={this.props.anotherModal} color='green' fluid size='large'>
+                            {/* <Button onClick={this.props.anotherModal} color='green' fluid size='large'>
                                 Registration
-                            </Button>
+                            </Button> */}
                 </Grid.Column>        
             </Grid>
         );

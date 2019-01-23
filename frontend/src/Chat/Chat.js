@@ -76,14 +76,14 @@ class Chat extends Component {
     }
 
     sendMessage=()=>{
-
         if (this.state.newMessage) {
             if (this.state.input) {
                 let message = {
-                time: moment().format('LTS'),
+                time: moment().format('LLL'),
                 content: this.state.input,
                 author: this.state.author.name,
                 messageId: uuidv4(),
+                channel: 'general',
                 }
                 this.setState(prev =>({
                     messages:[...prev.messages, message],

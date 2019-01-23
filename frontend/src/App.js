@@ -17,12 +17,14 @@ class App extends Component {
     modal: true,
     modalRegistration: false,
     user: '',
-    error: false,
+    error: '',
     online: 0,
     messages: [],
     usersOnline: [],
     password: '',
     confirmPassword: '',
+    email: '',
+    currentUser: {},
   }
 
   handlerChange = (e) => {
@@ -32,16 +34,10 @@ class App extends Component {
   }
 
   toggleModal = () => {
-    if (!this.state.user) {
-        this.setState(prev => ({
-          error: true,
-        }))
-    } else {
-        this.setState(prev => ({
-          modal: false,
-        }))
-    }
-  }
+      this.setState(prev => ({
+        modal: false,
+      }))
+   }
 
   anotherModal = () => {
     this.setState(prev => ({
@@ -50,40 +46,31 @@ class App extends Component {
       user: '',
       password: '',
       confirmPassword: '',
+      email: '',
     }))
 }
 
   funcRegistration = () => {
-    this.toggleModal();
     let obj = {
       username: this.state.user,
       password: this.state.password,
+      email: this.state.email,
     }
-    // console.log(obj);
     window.socket.emit('register', obj)
   }
 
   funcLogin = () => {
-    this.toggleModal();
-    let obj = {
-      username: this.state.user,
-      password: this.state.password,
-    }
-    // console.log(obj);
-    window.socket.emit('login', obj)
+      let obj = {
+        username: this.state.user,
+        password: this.state.password,
+        email: this.state.email,
+      }
+      window.socket.emit('login', obj)
   }
-
-  // onClick = () => {
-  //   this.toggleModal()
-  //   let obj = {
-  //     userName: this.state.user,
-  //     userId: this.state.userId,
-  //   }
-  //   window.socket.emit('send-user-name-to-online-DB', obj)
-  // }
 
   componentWillMount(){ 
     window.socket.on("all-messages", (obj) => {
+      // console.log(window.socket.channel);
       // console.log('aaaaaaaaaaaaaa2')
         this.setState({
             messages: obj.docs,
@@ -103,10 +90,34 @@ class App extends Component {
   componentDidMount() {
     window.socket.on('register-on-DB', (message) => {
       console.log('register-on-DB', message);
+      if (message.currentUser) {
+        this.setState({
+          currentUser: message.currentUser,
+          user: message.currentUser.username,
+          modal: false,
+          modalRegistration: false,
+        })
+      } else {
+        this.setState({
+          error: message.message,
+        })
+      }
     });
 
     window.socket.on('login-done', (message) => {
       console.log('login-done', message);
+      if (message.currentUser) {
+        this.setState({
+          currentUser: message.currentUser,
+          user: message.currentUser.username,
+          modal: false,
+          modalRegistration: false,
+        })
+      } else {
+        this.setState({
+          error: message.message,
+        })
+      }
     });
 
     window.socket.on("change-online", (online) => {
@@ -148,8 +159,9 @@ class App extends Component {
     return (
   
       <div className="App">
-        {modal && !modalRegistration ? <Login funcLogin={this.funcLogin} anotherModal={this.anotherModal} closeModal={this.onClick} user={this.state.user} handlerChange={this.handlerChange}error={this.state.error} password={this.state.password}/> 
-        : !modal && modalRegistration ? <Registration funcRegistration={this.funcRegistration} anotherModal={this.anotherModal} confirmPassword={this.state.confirmPassword} handlerChange={this.handlerChange} user={this.state.user} password={this.state.password}/> :
+        {modal && !modalRegistration ? <Login email={this.state.email} funcLogin={this.funcLogin} anotherModal={this.anotherModal} closeModal={this.onClick} user={this.state.user} handlerChange={this.handlerChange} 
+        error={this.state.error} password={this.state.password}/> 
+        : !modal && modalRegistration ? <Registration error={this.state.error} email={this.state.email} funcRegistration={this.funcRegistration} anotherModal={this.anotherModal} confirmPassword={this.state.confirmPassword} handlerChange={this.handlerChange} user={this.state.user} password={this.state.password}/> :
         <div className='chatWrapper'>
           <UserPanel users={usersOnline} user={this.state.user}/><Chat user={this.state.user} online={this.state.online} messages={this.state.messages}/> </div>}
       </div>

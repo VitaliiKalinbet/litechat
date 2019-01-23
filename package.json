@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"cd backend && nodemon server.js\" \"cd frontend && npm start\""
+    "start": "cd backend && node server.js",
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "keywords": [],
   "author": "",

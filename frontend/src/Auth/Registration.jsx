@@ -113,7 +113,7 @@ class Register extends Component {
                         <Icon name='comment alternate' color='green'/>
                         Register for Chat
                     </Header>
-                    <Form size='large' onSubmit={this.handleSubmit}>
+                    <Form size='large' onSubmit={this.props.funcRegistration}>
                         <Segment stacked>
                             <Form.Input
                             fluid
@@ -125,7 +125,19 @@ class Register extends Component {
                             onChange={this.props.handlerChange}
                             value={this.props.user}
                             required
-                            autofocus
+                            autoFocus
+                            />
+
+                            <Form.Input
+                            fluid
+                            name='email'
+                            icon='mail'
+                            iconPosition='left'
+                            placeholder='Enter email'
+                            type='email'
+                            onChange={this.props.handlerChange}
+                            value={this.props.email}
+                            required
                             />
 
                             <Form.Input
@@ -152,26 +164,24 @@ class Register extends Component {
                             required
                             />
 
-                            <Button onClick={this.props.funcRegistration} color='green' fluid size='large'>
+                            <Button type='submit' color='green' fluid size='large'>
                                 Submit
                             </Button>
 
                         </Segment>                 
                     </Form>
-                    {/* {errors.length > 0 && (
-                        <Message error>
-                            <h3>Error</h3>
-                            {errors.map(el => <p key={el.message}>{el.message}</p>)}
-                        </Message>
-                    )} */}
+                    {this.props.error &&
+                        <Message>
+                        {this.props.error}
+                        </Message> }
 
-                        {/* <Message>
+                        <Message>
                             Already a user?
-                            <NavLink to='/login'> Login</NavLink>
-                        </Message>       */}
-                        <Button onClick={this.props.anotherModal} color='green' fluid size='large'>
+                            <Button color='green' fluid onClick={this.props.anotherModal}> Login</Button>
+                        </Message>      
+                        {/* <Button onClick={this.props.anotherModal} color='green' fluid size='large'>
                                 Login
-                            </Button>
+                            </Button> */}
                 </Grid.Column>        
             </Grid>
         );
