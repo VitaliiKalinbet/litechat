@@ -40,5 +40,5 @@ const Message = require('./model/messageModel');
 // require('./router/router')(app);
 require('./sockets')(io);
 
-app.use(express.static('./frontend/build'));
+app.use(express.static('../../frontend/build'));
 server.listen(PORT, () => (console.log(`server is running on ${PORT}`)));
